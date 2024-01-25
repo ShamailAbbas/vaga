@@ -17,11 +17,15 @@ export default index;
 
 const ArticlePage = ({ article }) => {
   return (
-    <div className="article-page">
-      <img src={article.imageUrl} alt={article.title} />
-      <h1>{article.title}</h1>
-      <p className="date">{article.date}</p>
-      <p>{article.description}</p>
+    <div className="article-page p-8 mx-auto max-w-2xl">
+      <img
+        src={article.imageUrl}
+        alt={article.title}
+        className="mb-6 w-full h-48  rounded-md object-fill object-center"
+      />
+      <h1 className="text-xl font-bold mb-4">{article.title}</h1>
+      <p className="text-gray-600 mb-2">{article.date}</p>
+      <p className="text-lg">{article.description}</p>
     </div>
   );
 };
