@@ -16,49 +16,6 @@
   overflow-x: hidden;
 }
 
-@font-face {
-  font-family: Gotham Ultra;
-  /* src: url('/fonts/Gotham/Gotham-Black.otf'); */
-  src: url("/fonts/Gotham/gotham-ultra.ttf");
-}
-.heading {
-  font-family: Gotham Ultra;
-}
-@font-face {
-  font-family: Gotham;
-  src: url("/fonts/Gotham/Gotham-Bold.otf");
-}
-
-.feature {
-  font-family: Gotham;
-}
-
-/* Works on Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #e1e1e2 #e3e3e7;
-}
-
-/* Works on Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 3px;
-  height: 10px;
-}
-
-/* *::-webkit-scrollbar-track {
-  background: #1a1d33;
-} */
-
-*::-webkit-scrollbar-thumb {
-  background-color: #d6d6d4;
-  border-radius: 20px;
-  border: 3px;
-}
-
-.scrollBar::-webkit-scrollbar {
-  display: none;
-}
-
 /* Adjust the styles for the toolbar container */
 .ql-toolbar {
   display: flex;
