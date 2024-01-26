@@ -7,13 +7,15 @@ import YoutubeEmbed from "@/components/CityPage/YoutubeEmbed";
 import ReviewForm from "@/components/CityPage/ReviewForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { header } from "@/data";
+import { faqs, header } from "@/data";
 import deslugify from "@/utils/deslugify";
 import { fetchArticleByCity } from "@/lib/article";
-import { fetchAttorneyByCity } from "@/lib/attorny";
-import { fetchVideosByCity } from "@/lib/video";
-import { fetchAverageStarsByCity, fetchReviewByCity } from "@/lib/review";
+import { addAttorney, fetchAttorneyByCity } from "@/lib/attorny";
+import { addVideo, fetchVideosByCity } from "@/lib/video";
+import { addReview, fetchAverageStarsByCity, fetchReviewByCity } from "@/lib/review";
 import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
+import VideoForm from "@/components/CityPage/VideoForm";
+import AttorneyForm from "@/components/CityPage/AttornyForm";
 
 const city = ({
   attorney,
@@ -31,7 +33,11 @@ const city = ({
     set_IsAdmin(isAdmin);
   }, []);
 function renderForm(){
-  if(showForm=='review') return  <ReviewForm onSubmit={(data)=>console.log("form data is ",data)} setShowForm={setShowForm}/>
+  if(showForm=='review') return  <ReviewForm onSubmit={async (data)=>{ await addReview(data) 
+    setShowForm('')}} setShowForm={setShowForm}   city={city && deslugify(city)}/>
+  if(showForm=='video') return  <VideoForm onSubmit={async (data)=> {await addVideo(data);setShowForm('')}} setShowForm={setShowForm}   city={city && deslugify(city)}/>
+  if(showForm=='attorny') return  <AttorneyForm onSubmit={async(data)=>{await addAttorney(data);setShowForm('')}} setShowForm={setShowForm}  city={city && deslugify(city)}
+  state={state && deslugify(state)}/>
 }
   return (
     <div className="flex flex-col w-full items-center font-Poppins">
@@ -42,7 +48,7 @@ function renderForm(){
           state={state && deslugify(state)}
         />
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold ">
+          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('attorny')}>
             Add A New Attorny
           </button>
         )}
@@ -54,10 +60,15 @@ function renderForm(){
             Add A New Review
           </button>
         )}
-        <Review averageStars={averageStars} reviews={reviews} />
-        <Faq />
+        {reviews?.length>0&&<Review averageStars={averageStars} reviews={reviews} />}
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold ">
+          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('faqs')}>
+           Generate Faqs
+          </button>
+        )}
+        {faqs?.length>0&& <Faq faqs={faqs}/>}
+        {isAdmin && (
+          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('video')}>
             Add A New Video
           </button>
         )}
@@ -108,10 +119,10 @@ export const getServerSideProps = async ({ params, req }) => {
 
     const videoIds = await fetchVideosByCity(city_name);
     const reviews = await fetchReviewByCity(city_name);
-    const { averageStars } = await fetchAverageStarsByCity(city_name);
+    const averageStars= await fetchAverageStarsByCity(city_name);
     console.log("averageStars", averageStars);
     return {
-      props: { attorney, articles, videoIds, reviews, averageStars, isAdmin },
+      props: { attorney, articles, videoIds, reviews, averageStars:averageStars?.averageStars||null, isAdmin },
     };
   } catch (error) {
     return {

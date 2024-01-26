@@ -80,7 +80,7 @@ const Review = ({ averageStars, reviews }) => {
           className="transform scale-x-[-1]"
         />
       </div>
-      <div className="flex overflow-x-scroll pb-8 mt-8">
+      <div className={`flex overflow-x-auto pb-8 mt-8 ${reviews?.length==1&&"justify-center"}`}>
         {reviews.map((i, index) => (
           <EachReview data={i} key={index} />
         ))}

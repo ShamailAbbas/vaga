@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { articles } from "@/data";
+import Image from "next/image";
 const index = () => {
   const router = useRouter();
   const { article } = router.query;
@@ -18,9 +19,11 @@ export default index;
 const ArticlePage = ({ article }) => {
   return (
     <div className="article-page p-8 mx-auto max-w-2xl">
-      <img
+      <Image
         src={article.imageUrl}
         alt={article.title}
+        width={200}
+        height={130}
         className="mb-6 w-full h-48  rounded-md object-fill object-center"
       />
       <h1 className="text-xl font-bold mb-4">{article.title}</h1>

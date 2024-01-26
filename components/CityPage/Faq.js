@@ -2,39 +2,8 @@ import React from "react";
 
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
-const Faq = () => {
-  const faqs = [
-    {
-      question: "What is Lorem Ipsum?",
-      answer:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      question: "Why do we use it?",
-      answer:
-        "It is a long established fact that a reader will be distracted by the readable content.",
-    },
-    {
-      question: "What is Lorem Ipsum?",
-      answer:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      question: "Why do we use it?",
-      answer:
-        "It is a long established fact that a reader will be distracted by the readable content.",
-    },
-    {
-      question: "What is Lorem Ipsum?",
-      answer:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      question: "Why do we use it?",
-      answer:
-        "It is a long established fact that a reader will be distracted by the readable content.",
-    },
-  ];
+const Faq = ({faqs}) => {
+
 
   return (
     <div className="faq-container w-full my-6">

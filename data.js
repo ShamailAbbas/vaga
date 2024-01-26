@@ -93,7 +93,7 @@ export const attorney = [
 export const header = {
   title: `Personal Injury attorney near me
     in `,
-  description: `Top Rated Personal Injury Layers in `,
+  description: `Top Rated Personal Injury Lawyers in `,
 };
 
 export const videoIds = ["6nz8GXjxiHg", "QUNrBEhvXWQ"];
@@ -134,4 +134,36 @@ export const reviews = [
     review: "Gorgious, just wow",
     picture: "/images/profilepic.jpg",
   },
+];
+export   const faqs = [
+  // {
+  //   question: "What is Lorem Ipsum?",
+  //   answer:
+  //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  // },
+  // {
+  //   question: "Why do we use it?",
+  //   answer:
+  //     "It is a long established fact that a reader will be distracted by the readable content.",
+  // },
+  // {
+  //   question: "What is Lorem Ipsum?",
+  //   answer:
+  //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  // },
+  // {
+  //   question: "Why do we use it?",
+  //   answer:
+  //     "It is a long established fact that a reader will be distracted by the readable content.",
+  // },
+  // {
+  //   question: "What is Lorem Ipsum?",
+  //   answer:
+  //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  // },
+  // {
+  //   question: "Why do we use it?",
+  //   answer:
+  //     "It is a long established fact that a reader will be distracted by the readable content.",
+  // },
 ];

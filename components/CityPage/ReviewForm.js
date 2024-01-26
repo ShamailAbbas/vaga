@@ -1,12 +1,14 @@
 // components/ReviewForm.js
+import { uploadImage } from "@/lib/uploadImage";
 import { useState } from "react";
 
-const ReviewForm = ({ onSubmit,setShowForm }) => {
+const ReviewForm = ({ onSubmit,setShowForm ,city}) => {
   const [reviewData, setReviewData] = useState({
     reviewer: "",
     stars: 0,
     review: "",
     picture: null,
+    city
   });
 
   const handleInputChange = (e) => {
@@ -27,13 +29,7 @@ const ReviewForm = ({ onSubmit,setShowForm }) => {
     onSubmit(newReview);
   };
 
-  // This is a placeholder function for image upload to Cloudinary
-  const uploadImage = async (file) => {
-    // Implement Cloudinary upload logic here
-    // You might want to use a library like 'cloudinary-react' or 'cloudinary'
-    // Example: Cloudinary upload code goes here
-    return "cloudinary_url_to_the_uploaded_image";
-  };
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -61,6 +57,8 @@ const ReviewForm = ({ onSubmit,setShowForm }) => {
             value={reviewData.stars}
             onChange={handleInputChange}
             className="w-full border p-2"
+            min={0}
+            max={5}
           />
         </label>
         <label className="block mb-4">
@@ -83,7 +81,7 @@ const ReviewForm = ({ onSubmit,setShowForm }) => {
         </label>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-purple-500 text-white px-4 py-1 rounded-2xl hover:bg-purple-700"
         >
           Submit
         </button>
