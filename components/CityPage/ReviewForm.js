@@ -2,13 +2,13 @@
 import { uploadImage } from "@/lib/uploadImage";
 import { useState } from "react";
 
-const ReviewForm = ({ onSubmit,setShowForm ,city}) => {
+const ReviewForm = ({ onSubmit, setShowForm, city }) => {
   const [reviewData, setReviewData] = useState({
     reviewer: "",
     stars: 0,
     review: "",
     picture: null,
-    city
+    city,
   });
 
   const handleInputChange = (e) => {
@@ -29,18 +29,20 @@ const ReviewForm = ({ onSubmit,setShowForm ,city}) => {
     onSubmit(newReview);
   };
 
-
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      
       <form
         className="bg-white p-8 rounded shadow-md max-w-md relative"
         onSubmit={handleSubmit}
       >
-        <button onClick={()=>setShowForm('')} className='right-12 top-2 text-red-600 absolute border-none'>Close</button>
+        <button
+          onClick={() => setShowForm("")}
+          className="right-12 top-2 text-red-600 absolute border-none"
+        >
+          Close
+        </button>
         <label className="block mb-4">
-          Reviewer:
+          Reviewer Name:
           <input
             type="text"
             name="reviewer"

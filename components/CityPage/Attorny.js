@@ -38,7 +38,7 @@ const Attorny = ({ data }) => {
       <p className="opacity-70 font-semibold  mb-2">
         {data.city} {data.state}
       </p>
-      <p className="font-medium opacity-80">{data.desctiption}</p>
+      <p className="font-medium opacity-80">{data.description}</p>
       <div className="flex justify-between w-full">
         <button className="flex  w-[48%] justify-center py-2 my-10 rounded-full  bg-purple-900 hover:bg-purple-700  text-16 font-bold text-white">
           <CiMail className="mr-2 text-[20px]" /> Contact me
