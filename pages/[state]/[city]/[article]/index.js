@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { articles } from "@/data";
 import Image from "next/image";
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const { article } = router.query;
 
@@ -14,7 +14,7 @@ const index = () => {
   return <ArticlePage article={current_article} />;
 };
 
-export default index;
+export default Index;
 
 const ArticlePage = ({ article }) => {
   return (

@@ -12,12 +12,16 @@ import deslugify from "@/utils/deslugify";
 import { fetchArticleByCity } from "@/lib/article";
 import { addAttorney, fetchAttorneyByCity } from "@/lib/attorny";
 import { addVideo, fetchVideosByCity } from "@/lib/video";
-import { addReview, fetchAverageStarsByCity, fetchReviewByCity } from "@/lib/review";
+import {
+  addReview,
+  fetchAverageStarsByCity,
+  fetchReviewByCity,
+} from "@/lib/review";
 import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
 import VideoForm from "@/components/CityPage/VideoForm";
 import AttorneyForm from "@/components/CityPage/AttornyForm";
 
-const city = ({
+const City = ({
   attorney,
   articles,
   videoIds,
@@ -28,17 +32,46 @@ const city = ({
   const router = useRouter();
   const { state, city, article } = router.query;
   const [_isAdmin, set_IsAdmin] = useState(false);
-  const [showForm, setShowForm] = useState('');
+  const [showForm, setShowForm] = useState("");
   useEffect(() => {
     set_IsAdmin(isAdmin);
   }, []);
-function renderForm(){
-  if(showForm=='review') return  <ReviewForm onSubmit={async (data)=>{ await addReview(data) 
-    setShowForm('')}} setShowForm={setShowForm}   city={city && deslugify(city)}/>
-  if(showForm=='video') return  <VideoForm onSubmit={async (data)=> {await addVideo(data);setShowForm('')}} setShowForm={setShowForm}   city={city && deslugify(city)}/>
-  if(showForm=='attorny') return  <AttorneyForm onSubmit={async(data)=>{await addAttorney(data);setShowForm('')}} setShowForm={setShowForm}  city={city && deslugify(city)}
-  state={state && deslugify(state)}/>
-}
+  function renderForm() {
+    if (showForm == "review")
+      return (
+        <ReviewForm
+          onSubmit={async (data) => {
+            await addReview(data);
+            setShowForm("");
+          }}
+          setShowForm={setShowForm}
+          city={city && deslugify(city)}
+        />
+      );
+    if (showForm == "video")
+      return (
+        <VideoForm
+          onSubmit={async (data) => {
+            await addVideo(data);
+            setShowForm("");
+          }}
+          setShowForm={setShowForm}
+          city={city && deslugify(city)}
+        />
+      );
+    if (showForm == "attorny")
+      return (
+        <AttorneyForm
+          onSubmit={async (data) => {
+            await addAttorney(data);
+            setShowForm("");
+          }}
+          setShowForm={setShowForm}
+          city={city && deslugify(city)}
+          state={state && deslugify(state)}
+        />
+      );
+  }
   return (
     <div className="flex flex-col w-full items-center font-Poppins">
       <div className="flex flex-col justify-center items-center max-w-[500px] ">
@@ -48,7 +81,10 @@ function renderForm(){
           state={state && deslugify(state)}
         />
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('attorny')}>
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
+            onClick={() => setShowForm("attorny")}
+          >
             Add A New Attorny
           </button>
         )}
@@ -56,19 +92,30 @@ function renderForm(){
           <Attorny data={data} key={index} />
         ))}
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('review')}>
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
+            onClick={() => setShowForm("review")}
+          >
             Add A New Review
           </button>
         )}
-        {reviews?.length>0&&<Review averageStars={averageStars} reviews={reviews} />}
+        {reviews?.length > 0 && (
+          <Review averageStars={averageStars} reviews={reviews} />
+        )}
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('faqs')}>
-           Generate Faqs
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
+            onClick={() => setShowForm("faqs")}
+          >
+            Generate Faqs
           </button>
         )}
-        {faqs?.length>0&& <Faq faqs={faqs}/>}
+        {faqs?.length > 0 && <Faq faqs={faqs} />}
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold " onClick={()=>setShowForm('video')}>
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
+            onClick={() => setShowForm("video")}
+          >
             Add A New Video
           </button>
         )}
@@ -99,7 +146,7 @@ function renderForm(){
   );
 };
 
-export default city;
+export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
   try {
@@ -119,10 +166,17 @@ export const getServerSideProps = async ({ params, req }) => {
 
     const videoIds = await fetchVideosByCity(city_name);
     const reviews = await fetchReviewByCity(city_name);
-    const averageStars= await fetchAverageStarsByCity(city_name);
+    const averageStars = await fetchAverageStarsByCity(city_name);
     console.log("averageStars", averageStars);
     return {
-      props: { attorney, articles, videoIds, reviews, averageStars:averageStars?.averageStars||null, isAdmin },
+      props: {
+        attorney,
+        articles,
+        videoIds,
+        reviews,
+        averageStars: averageStars?.averageStars || null,
+        isAdmin,
+      },
     };
   } catch (error) {
     return {
