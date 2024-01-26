@@ -3,44 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 
-const today = new Date(); // Current date and time
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1); // 1 day ago
-const lastWeek = new Date();
-lastWeek.setDate(lastWeek.getDate() - 5); // 7 days ago
-const customDate = new Date(2023, 0, 15);
-
-const Review = ({ aggegateReview }) => {
-  const reviews = [
-    {
-      reviewer: "Dany",
-      stars: 4,
-      date: new Date(),
-      review: "Gorgious, just wow",
-      picture: "/images/profilepic.jpg",
-    },
-    {
-      reviewer: "Dany",
-      stars: 4,
-      date: yesterday,
-      review: "Gorgious, just wow",
-      picture: "/images/profilepic.jpg",
-    },
-    {
-      reviewer: "Dany",
-      stars: 4,
-      date: customDate,
-      review: "Gorgious, just wow",
-      picture: "/images/profilepic.jpg",
-    },
-    {
-      reviewer: "Dany",
-      stars: 4,
-      date: lastWeek,
-      review: "Gorgious, just wow",
-      picture: "/images/profilepic.jpg",
-    },
-  ];
+const Review = ({ averageStars, reviews }) => {
   const StarRating = ({ rating }) => {
     // Ensure the rating is within the range [0, 5]
     const normalizedRating = Math.min(5, Math.max(0, rating));
@@ -107,9 +70,7 @@ const Review = ({ aggegateReview }) => {
           quality={80}
           //className="w-40 h-40"
         />
-        <p className="opacity-70 font-bold text-[60px] mb-12">
-          {aggegateReview}
-        </p>
+        <p className="opacity-70 font-bold text-[60px] mb-12">{averageStars}</p>
         <Image
           src="/images/flower.png"
           alt="profile"

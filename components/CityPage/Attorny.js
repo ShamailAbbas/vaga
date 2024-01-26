@@ -26,8 +26,8 @@ const Attorny = ({ data }) => {
         </p>
 
         <div className="flex items-center text-gray-600">
-          {data.firm.name}{" "}
-          <Link href={data.firm.link}>
+          {data.firm}{" "}
+          <Link href={data.website}>
             <IoIosLink />
           </Link>
         </div>
