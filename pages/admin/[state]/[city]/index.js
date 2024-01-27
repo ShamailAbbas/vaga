@@ -6,10 +6,10 @@ import Review from "@/components/CityPage/Review";
 import YoutubeEmbed from "@/components/CityPage/YoutubeEmbed";
 import ReviewForm from "@/components/CityPage/ReviewForm";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { faqs, header } from "@/data";
+import { useEffect, useState } from "react";
+import { header } from "@/data";
 import deslugify from "@/utils/deslugify";
-import { fetchArticleByCity } from "@/lib/article";
+import { addArticle, fetchArticleByCity } from "@/lib/article";
 import { addAttorney, fetchAttorneyByCity } from "@/lib/attorny";
 import { addVideo, fetchVideosByCity } from "@/lib/video";
 import {
@@ -20,6 +20,10 @@ import {
 import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
 import VideoForm from "@/components/CityPage/VideoForm";
 import AttorneyForm from "@/components/CityPage/AttornyForm";
+import ArticleForm from "@/components/CityPage/ArticleForm";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { generateAndSaveFaqs, getFaqByCity } from "@/lib/faq";
 
 const City = ({
   attorney,
@@ -28,21 +32,40 @@ const City = ({
   reviews,
   averageStars,
   isAdmin,
+  faqs,
 }) => {
   const router = useRouter();
-  const { state, city, article } = router.query;
+  const { state, city } = router.query;
   const [_isAdmin, set_IsAdmin] = useState(false);
   const [showForm, setShowForm] = useState("");
   useEffect(() => {
     set_IsAdmin(isAdmin);
   }, []);
+
+  function showMessage(message, closetime = 1000) {
+    toast(message, {
+      position: "top-right",
+      autoClose: closetime,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      type: "success",
+    });
+  }
+
   function renderForm() {
     if (showForm == "review")
       return (
         <ReviewForm
           onSubmit={async (data) => {
-            await addReview(data);
-            setShowForm("");
+            const res = await addReview(data);
+            if (res._id) {
+              showMessage("Added Successfully");
+              setShowForm("");
+            }
           }}
           setShowForm={setShowForm}
           city={city && deslugify(city)}
@@ -52,8 +75,11 @@ const City = ({
       return (
         <VideoForm
           onSubmit={async (data) => {
-            await addVideo(data);
-            setShowForm("");
+            const res = await addVideo(data);
+            if (res._id) {
+              showMessage("Added Successfully");
+              setShowForm("");
+            }
           }}
           setShowForm={setShowForm}
           city={city && deslugify(city)}
@@ -63,8 +89,27 @@ const City = ({
       return (
         <AttorneyForm
           onSubmit={async (data) => {
-            await addAttorney(data);
-            setShowForm("");
+            const res = await addAttorney(data);
+            if (res._id) {
+              showMessage("Added Successfully");
+              setShowForm("");
+            }
+          }}
+          setShowForm={setShowForm}
+          city={city && deslugify(city)}
+          state={state && deslugify(state)}
+        />
+      );
+    if (showForm == "article")
+      return (
+        <ArticleForm
+          onSubmit={async (data) => {
+            console.log("article data is ", data);
+            const res = await addArticle(data);
+            if (res._id) {
+              showMessage("Added Successfully");
+              setShowForm("");
+            }
           }}
           setShowForm={setShowForm}
           city={city && deslugify(city)}
@@ -74,12 +119,14 @@ const City = ({
   }
   return (
     <div className="flex flex-col w-full items-center font-Poppins">
+      <ToastContainer />
       <div className="flex flex-col justify-center items-center max-w-[500px] ">
         <Header
           header={header}
           city={city && deslugify(city)}
           state={state && deslugify(state)}
         />
+
         {isAdmin && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
@@ -99,18 +146,29 @@ const City = ({
             Add A New Review
           </button>
         )}
-        {reviews?.length > 0 && (
+        {reviews?.reviews?.length > 0 && (
           <Review averageStars={averageStars} reviews={reviews} />
         )}
-        {isAdmin && (
+        {isAdmin && !faqs?.length > 0 && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
-            onClick={() => setShowForm("faqs")}
+            onClick={async () => {
+              showMessage(`Generating Faqs please wait...`, 60000);
+              const res = await generateAndSaveFaqs(
+                deslugify(state),
+                deslugify(city)
+              );
+            }}
           >
             Generate Faqs
           </button>
         )}
         {faqs?.length > 0 && <Faq faqs={faqs} />}
+        {videoIds.length > 0 && (
+          <p className=" self-start uppercase text-[22px]  opacity-90 mt-8">
+            PERSONAL INJURY VIDEOS FOR {deslugify(city)}
+          </p>
+        )}
         {isAdmin && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
@@ -122,8 +180,16 @@ const City = ({
         {videoIds.map((i, index) => (
           <YoutubeEmbed videoId={i.videoId} key={index} />
         ))}
+        {articles.length > 0 && (
+          <p className=" self-start  uppercase text-[22px]   opacity-90 mt-8">
+            ARTICLES
+          </p>
+        )}
         {isAdmin && (
-          <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold ">
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
+            onClick={() => setShowForm("article")}
+          >
             Add A New Article
           </button>
         )}
@@ -149,15 +215,8 @@ const City = ({
 export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
+  let isAdmin = true;
   try {
-    let isAdmin = true;
-
-    // Extract subdomain from the hostname
-    // const subdomain = req.headers.host.split(".")[0];
-
-    // if (subdomain.toLowerCase() === "admin") {
-    //   isAdmin = true;
-    // }
     const { city } = params;
     const city_name = deslugify(city);
     const articles = await fetchArticleByCity(city_name);
@@ -166,8 +225,10 @@ export const getServerSideProps = async ({ params, req }) => {
 
     const videoIds = await fetchVideosByCity(city_name);
     const reviews = await fetchReviewByCity(city_name);
+    console.log(reviews);
     const averageStars = await fetchAverageStarsByCity(city_name);
-    console.log("averageStars", averageStars);
+    const faqs = await getFaqByCity(city_name);
+
     return {
       props: {
         attorney,
@@ -176,6 +237,7 @@ export const getServerSideProps = async ({ params, req }) => {
         reviews,
         averageStars: averageStars?.averageStars || null,
         isAdmin,
+        faqs,
       },
     };
   } catch (error) {
@@ -184,9 +246,10 @@ export const getServerSideProps = async ({ params, req }) => {
         attorney: [],
         articles: [],
         videoIds: [],
-        reviews: [],
+        reviews: {},
         averageStars: null,
         isAdmin,
+        faqs: [],
       },
     };
   }

@@ -7,7 +7,7 @@ import YoutubeEmbed from "@/components/CityPage/YoutubeEmbed";
 import ReviewForm from "@/components/CityPage/ReviewForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { faqs, header } from "@/data";
+import { header } from "@/data";
 import deslugify from "@/utils/deslugify";
 import { fetchArticleByCity } from "@/lib/article";
 import { addAttorney, fetchAttorneyByCity } from "@/lib/attorny";
@@ -20,6 +20,7 @@ import {
 import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
 import VideoForm from "@/components/CityPage/VideoForm";
 import AttorneyForm from "@/components/CityPage/AttornyForm";
+import { getFaqByCity } from "@/lib/faq";
 
 const City = ({
   attorney,
@@ -28,6 +29,7 @@ const City = ({
   reviews,
   averageStars,
   isAdmin,
+  faqs,
 }) => {
   const router = useRouter();
   const { state, city, article } = router.query;
@@ -99,7 +101,7 @@ const City = ({
             Add A New Review
           </button>
         )}
-        {reviews?.length > 0 && (
+        {reviews?.reviews?.length > 0 && (
           <Review averageStars={averageStars} reviews={reviews} />
         )}
         {isAdmin && (
@@ -111,6 +113,11 @@ const City = ({
           </button>
         )}
         {faqs?.length > 0 && <Faq faqs={faqs} />}
+        {videoIds.length > 0 && (
+          <p className=" self-start uppercase text-[22px]  opacity-90 mt-8">
+            PERSONAL INJURY VIDEOS FOR {deslugify(city)}
+          </p>
+        )}
         {isAdmin && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
@@ -122,6 +129,11 @@ const City = ({
         {videoIds.map((i, index) => (
           <YoutubeEmbed videoId={i.videoId} key={index} />
         ))}
+        {articles.length > 0 && (
+          <p className=" self-start  uppercase text-[22px]   opacity-90 mt-8">
+            ARTICLES
+          </p>
+        )}
         {isAdmin && (
           <button className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold ">
             Add A New Article
@@ -149,9 +161,8 @@ const City = ({
 export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
+  let isAdmin = false;
   try {
-    let isAdmin = false;
-
     // Extract subdomain from the hostname
     const subdomain = req.headers.host.split(".")[0];
 
@@ -167,6 +178,7 @@ export const getServerSideProps = async ({ params, req }) => {
     const videoIds = await fetchVideosByCity(city_name);
     const reviews = await fetchReviewByCity(city_name);
     const averageStars = await fetchAverageStarsByCity(city_name);
+    const faqs = await getFaqByCity(city_name);
     console.log("averageStars", averageStars);
     return {
       props: {
@@ -176,6 +188,7 @@ export const getServerSideProps = async ({ params, req }) => {
         reviews,
         averageStars: averageStars?.averageStars || null,
         isAdmin,
+        faqs,
       },
     };
   } catch (error) {
@@ -184,9 +197,10 @@ export const getServerSideProps = async ({ params, req }) => {
         attorney: [],
         articles: [],
         videoIds: [],
-        reviews: [],
+        reviews: {},
         averageStars: null,
         isAdmin,
+        faqs: [],
       },
     };
   }

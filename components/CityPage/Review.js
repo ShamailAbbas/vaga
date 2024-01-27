@@ -1,6 +1,6 @@
 import moment from "moment";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+
 import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 
 const Review = ({ averageStars, reviews }) => {
@@ -65,29 +65,42 @@ const Review = ({ averageStars, reviews }) => {
         <Image
           src="/images/flower.png"
           alt="profile"
-          width={80}
-          height={80}
+          width={50}
+          height={50}
           quality={80}
           //className="w-40 h-40"
         />
-        <p className="opacity-70 font-bold text-[60px] mb-12">{averageStars}</p>
+        <p className="opacity-70 font-bold text-[40px] mb-6">{averageStars}</p>
         <Image
           src="/images/flower.png"
           alt="profile"
-          width={80}
-          height={80}
+          width={50}
+          height={50}
           quality={80}
           className="transform scale-x-[-1]"
         />
       </div>
-      <div className={`flex overflow-x-auto pb-8 mt-8 ${reviews?.length==1&&"justify-center"}`}>
-        {reviews.map((i, index) => (
+      <div className="flex items-center flex-col mt-4 mb-6 w-full ">
+        <p className="font-medium  mb-2">Guest Favorite</p>
+        <p className="w-[64%] text-center text-sm opacity-70">
+          One of the most beloved home on Airbnb based on ratings, reviews and
+          reliablity.
+        </p>
+      </div>
+      <div
+        className={`flex overflow-x-auto pb-8 mt-8 ${
+          reviews?.reviews?.length == 1 && "justify-center"
+        }`}
+      >
+        {reviews?.reviews?.map((i, index) => (
           <EachReview data={i} key={index} />
         ))}
       </div>
-      <button className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold ">
-        See all 280 reviews
-      </button>
+      {reviews?.totalReviews > 10 && (
+        <button className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold ">
+          See all {reviews?.totalReviews} reviews
+        </button>
+      )}
     </div>
   );
 };

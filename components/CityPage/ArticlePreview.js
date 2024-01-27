@@ -2,8 +2,24 @@
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/router";
-const ArticlePreview = ({ imageUrl, title, date, type, description,state,city,slug }) => {
-  const router=useRouter()
+const ArticlePreview = ({
+  imageUrl,
+  title,
+  date,
+  type,
+  description,
+  state,
+  city,
+  slug,
+}) => {
+  const router = useRouter();
+
+  const previewText = description
+    .replace(/<\/?[^>]+(>|$)/g, "")
+    .split(" ")
+    .slice(0, 20)
+    .join(" ");
+
   return (
     <div className="flex w-full my-4 border-b-[2px] border-slate-100 pt-4 pb-8">
       <div className="min-w-[150px] min-h-[150px] ">
@@ -23,9 +39,14 @@ const ArticlePreview = ({ imageUrl, title, date, type, description,state,city,sl
           <p className="ml-6 font-medium">{date}</p>
         </div>
         <p className="opacity-70 mt-2 text-sm my-2 ">
-          {description.slice(0, 100)}
+          {/* {description.slice(0, 100)} */}
+          {previewText}
         </p>
-        <button className="  px-4 py-[3px] rounded-full uppercase font-medium text-sm border-[1px] border-slate-200 hover:bg-slate-50 " onClick={()=>router.push(`/${state}/${city}/${slug}`)}>
+
+        <button
+          className="  px-4 py-[3px] rounded-full uppercase font-medium text-sm border-[1px] border-slate-200 hover:bg-slate-50 "
+          onClick={() => router.push(`/${state}/${city}/${slug}`)}
+        >
           Read More
         </button>
       </div>

@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { uploadImage } from "@/lib/uploadImage";
 
-const AttorneyForm = ({ onSubmit, setShowForm ,city,state}) => {
+const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
   const [attorneyData, setAttorneyData] = useState({
-    image: "/images/profilepic.jpg",
+    image: "",
     phone: "",
     name: "",
     city: city,
@@ -21,9 +21,9 @@ const AttorneyForm = ({ onSubmit, setShowForm ,city,state}) => {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    let imageUrl
-     imageUrl = await uploadImage(file);
-    
+    let imageUrl;
+    imageUrl = await uploadImage(file);
+
     setAttorneyData((prevData) => ({ ...prevData, image: imageUrl }));
   };
 
@@ -64,7 +64,7 @@ const AttorneyForm = ({ onSubmit, setShowForm ,city,state}) => {
             className="w-full border p-2"
           />
         </label>
-   
+
         <label className="block mb-2">
           Description:
           <textarea

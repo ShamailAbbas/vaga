@@ -1,17 +1,20 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { articles } from "@/data";
-import Image from "next/image";
-const Index = () => {
-  const router = useRouter();
-  const { article } = router.query;
 
-  const current_article = articles.find((i) => i.slug == article);
-  if (!current_article) {
-    return <p>Article not found</p>;
+import Image from "next/image";
+import { fetchArticleBySlug } from "@/lib/article";
+
+import deslugify from "@/utils/deslugify";
+const Index = ({ article }) => {
+  if (!article._id) {
+    return (
+      <p className="w-full h-screen flex items-center justify-center font-bold text-40 ">
+        Article not found
+      </p>
+    );
   }
 
-  return <ArticlePage article={current_article} />;
+  return <ArticlePage article={article} />;
 };
 
 export default Index;
@@ -27,8 +30,35 @@ const ArticlePage = ({ article }) => {
         className="mb-6 w-full h-48  rounded-md object-fill object-center"
       />
       <h1 className="text-xl font-bold mb-4">{article.title}</h1>
-      <p className="text-gray-600 mb-2">{article.date}</p>
-      <p className="text-lg">{article.description}</p>
+      <div className="flex">
+        <p className="text-gray-600 mb-2 mr-6">{article.type}</p>
+        <p className="text-gray-600 mb-2">{article.date}</p>
+      </div>
+      {/* <p className="text-lg">{article.description}</p> */}
+      <div dangerouslySetInnerHTML={{ __html: article.description }} />
     </div>
   );
+};
+
+export const getServerSideProps = async ({ params, req }) => {
+  try {
+    const { city, state, article } = params;
+
+    const article_by_slug = await fetchArticleBySlug(
+      article,
+      deslugify(city),
+      deslugify(state)
+    );
+    console.log("article is ", article_by_slug);
+
+    return {
+      props: {
+        article: article_by_slug?._id ? article_by_slug : {},
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
 };

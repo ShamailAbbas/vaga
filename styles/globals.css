@@ -15,28 +15,3 @@
 * {
   overflow-x: hidden;
 }
-
-/* Adjust the styles for the toolbar container */
-.ql-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between; /* or 'space-around' based on your preference */
-}
-
-/* Adjust the styles for individual dropdown containers */
-.ql-picker {
-  margin-right: 10px; /* Adjust spacing between dropdowns */
-}
-
-/* Adjust the styles for individual dropdown items */
-.ql-picker-item {
-  white-space: nowrap; /* Prevent line breaks for long option names */
-}
-.ql-formats {
-  height: 200px;
-  border: 2px solid red;
-  z-index: 100;
-}
-.ql-picker-options {
-  height: auto;
-}
