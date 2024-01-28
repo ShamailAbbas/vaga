@@ -75,8 +75,8 @@ const City = ({
       );
   }
   return (
-    <div className="flex flex-col w-full items-center font-Poppins">
-      <div className="flex flex-col justify-center items-center max-w-[500px] ">
+    <div className="flex flex-col w-full  items-center font-Poppins px-4">
+      <div className="flex flex-col justify-center items-center sm:max-w-[500px] w-full">
         <Header
           header={header}
           city={city && deslugify(city)}
