@@ -22,7 +22,7 @@ const ArticlePreview = ({
 
   return (
     <div className="flex w-full my-4 border-b-[2px] border-slate-100 pt-4 pb-8">
-      <div className="w-[150px] h-[150px] sm:min-w-[150px] sm:min-h-[150px] ">
+      <div className="w-[300px] h-[150px] sm:min-w-[150px] sm:min-h-[150px] ">
         <Image
           src={imageUrl}
           alt={title}
