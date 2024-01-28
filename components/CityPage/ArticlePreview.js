@@ -22,7 +22,7 @@ const ArticlePreview = ({
 
   return (
     <div className="flex w-full my-4 border-b-[2px] border-slate-100 pt-4 pb-8">
-      <div className="min-w-[150px] min-h-[150px] ">
+      <div className="w-[150px] h-[150px] sm:min-w-[150px] sm:min-h-[150px] ">
         <Image
           src={imageUrl}
           alt={title}
@@ -33,10 +33,13 @@ const ArticlePreview = ({
       </div>
 
       <div className="ml-4">
-        <h2 className="font-bold text-20 ">{title}</h2>
+        <h2 className="font-bold text-20 ">
+          {title.slice(0, 35)}
+          {title.length > 35 && " ..."}
+        </h2>
         <div className="flex mb-2">
-          <p className="font-medium">{type}</p>
-          <p className="ml-6 font-medium">{date}</p>
+          <p className="font-medium text-sm ">{type}</p>
+          <p className="ml-2 sm:ml-6 font-medium text-sm">{date}</p>
         </div>
         <p className="opacity-70 mt-2 text-sm my-2 ">
           {/* {description.slice(0, 100)} */}
