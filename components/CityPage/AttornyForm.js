@@ -33,7 +33,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center py-12">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center py-12 px-2">
       <form
         className="bg-white p-8 rounded shadow-md max-w-md relative  mt-24"
         onSubmit={handleSubmit}

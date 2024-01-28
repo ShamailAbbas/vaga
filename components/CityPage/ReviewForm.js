@@ -30,7 +30,7 @@ const ReviewForm = ({ onSubmit, setShowForm, city }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-2">
       <form
         className="bg-white p-8 rounded shadow-md max-w-md relative"
         onSubmit={handleSubmit}
