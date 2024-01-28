@@ -21,6 +21,7 @@ import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
 import VideoForm from "@/components/CityPage/VideoForm";
 import AttorneyForm from "@/components/CityPage/AttornyForm";
 import { getFaqByCity } from "@/lib/faq";
+import { GetCityByName } from "@/lib/city";
 
 const City = ({
   attorney,
@@ -30,6 +31,7 @@ const City = ({
   averageStars,
   isAdmin,
   faqs,
+  cityFound,
 }) => {
   const router = useRouter();
   const { state, city, article } = router.query;
@@ -73,6 +75,13 @@ const City = ({
           state={state && deslugify(state)}
         />
       );
+  }
+  if (!cityFound) {
+    return (
+      <p className="w-full h-screen flex items-center justify-center font-bold text-40 ">
+        City not found
+      </p>
+    );
   }
   return (
     <div className="flex flex-col w-full  items-center font-Poppins px-4">
@@ -162,6 +171,7 @@ export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
   let isAdmin = false;
+  let cityFound = false;
   try {
     // Extract subdomain from the hostname
     const subdomain = req.headers.host.split(".")[0];
@@ -169,8 +179,17 @@ export const getServerSideProps = async ({ params, req }) => {
     if (subdomain.toLowerCase() === "admin") {
       isAdmin = true;
     }
-    const { city } = params;
+    const { city, state } = params;
     const city_name = deslugify(city);
+    const state_name = deslugify(state);
+
+    const _city = await GetCityByName(city_name, state_name);
+    // console.log("_city", _city);
+
+    if (!_city._id) {
+      throw new Error();
+    }
+
     const articles = await fetchArticleByCity(city_name);
 
     const attorney = await fetchAttorneyByCity(city_name);
@@ -179,7 +198,7 @@ export const getServerSideProps = async ({ params, req }) => {
     const reviews = await fetchReviewByCity(city_name);
     const averageStars = await fetchAverageStarsByCity(city_name);
     const faqs = await getFaqByCity(city_name);
-    console.log("averageStars", averageStars);
+    // console.log("articles", articles);
     return {
       props: {
         attorney,
@@ -189,6 +208,7 @@ export const getServerSideProps = async ({ params, req }) => {
         averageStars: averageStars?.averageStars || null,
         isAdmin,
         faqs,
+        cityFound: true,
       },
     };
   } catch (error) {
@@ -201,6 +221,7 @@ export const getServerSideProps = async ({ params, req }) => {
         averageStars: null,
         isAdmin,
         faqs: [],
+        cityFound,
       },
     };
   }

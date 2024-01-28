@@ -24,6 +24,7 @@ import ArticleForm from "@/components/CityPage/ArticleForm";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { generateAndSaveFaqs, getFaqByCity } from "@/lib/faq";
+import { GetCityByName } from "@/lib/city";
 
 const City = ({
   attorney,
@@ -33,6 +34,7 @@ const City = ({
   averageStars,
   isAdmin,
   faqs,
+  cityFound,
 }) => {
   const router = useRouter();
   const { state, city } = router.query;
@@ -116,6 +118,14 @@ const City = ({
           state={state && deslugify(state)}
         />
       );
+  }
+
+  if (!cityFound) {
+    return (
+      <p className="w-full h-screen flex items-center justify-center font-bold text-40 ">
+        City not found
+      </p>
+    );
   }
   return (
     <div className="flex flex-col w-full items-center font-Poppins px-4">
@@ -216,16 +226,26 @@ export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
   let isAdmin = true;
+  let cityFound = false;
   try {
-    const { city } = params;
+    const { city, state } = params;
+    const state_name = deslugify(state);
     const city_name = deslugify(city);
+
+    const _city = await GetCityByName(city_name, state_name);
+    // console.log("_city", _city);
+
+    if (!_city._id) {
+      throw new Error();
+    }
+
     const articles = await fetchArticleByCity(city_name);
 
     const attorney = await fetchAttorneyByCity(city_name);
 
     const videoIds = await fetchVideosByCity(city_name);
     const reviews = await fetchReviewByCity(city_name);
-    console.log(reviews);
+
     const averageStars = await fetchAverageStarsByCity(city_name);
     const faqs = await getFaqByCity(city_name);
 
@@ -238,6 +258,7 @@ export const getServerSideProps = async ({ params, req }) => {
         averageStars: averageStars?.averageStars || null,
         isAdmin,
         faqs,
+        cityFound: true,
       },
     };
   } catch (error) {
@@ -250,6 +271,7 @@ export const getServerSideProps = async ({ params, req }) => {
         averageStars: null,
         isAdmin,
         faqs: [],
+        cityFound,
       },
     };
   }
