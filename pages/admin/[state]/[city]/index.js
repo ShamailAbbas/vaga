@@ -12,6 +12,7 @@ import deslugify from "@/utils/deslugify";
 import { addArticle, fetchArticleByCity } from "@/lib/article";
 import { addAttorney, fetchAttorneyByCity } from "@/lib/attorny";
 import { addVideo, fetchVideosByCity } from "@/lib/video";
+import ArticleForm from "@/components/CityPage/ArticleForm";
 import {
   addReview,
   fetchAverageStarsByCity,
@@ -20,7 +21,7 @@ import {
 import isSubdomainAdmin from "@/utils/isSubdomainAdmin ";
 import VideoForm from "@/components/CityPage/VideoForm";
 import AttorneyForm from "@/components/CityPage/AttornyForm";
-import ArticleForm from "@/components/CityPage/ArticleForm";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { generateAndSaveFaqs, getFaqByCity } from "@/lib/faq";
