@@ -45,9 +45,9 @@ const ArticleForm = ({ onSubmit, setShowForm, state, city }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-2">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-2 z-[100]">
       <form
-        className="bg-white p-8 rounded shadow-md max-w-lg relative"
+        className="bg-white p-8 rounded shadow-md max-w-lg relative z-[1000]"
         onSubmit={handleSubmit}
       >
         <button
