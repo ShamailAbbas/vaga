@@ -58,7 +58,7 @@ const City = ({
     });
   }
 
-  function renderForm() {
+  function renderForm(showForm) {
     if (showForm == "review")
       return (
         <ReviewForm
@@ -216,7 +216,7 @@ const City = ({
             slug={article.slug}
           />
         ))}
-        {renderForm()}
+        {renderForm(showForm)}
       </div>
     </div>
   );
