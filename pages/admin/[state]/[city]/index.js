@@ -197,19 +197,20 @@ const City = ({
         )}
 
         {showForm == 4 && (
-          <ArticleForm
-            onSubmit={async (data) => {
-              console.log("article data is ", data);
-              const res = await addArticle(data);
-              if (res._id) {
-                showMessage("Added Successfully");
-                setShowForm("");
-              }
-            }}
-            setShowForm={setShowForm}
-            city={city && deslugify(city)}
-            state={state && deslugify(state)}
-          />
+          <p>jjl</p>
+          // <ArticleForm
+          //   onSubmit={async (data) => {
+          //     console.log("article data is ", data);
+          //     const res = await addArticle(data);
+          //     if (res._id) {
+          //       showMessage("Added Successfully");
+          //       setShowForm("");
+          //     }
+          //   }}
+          //   setShowForm={setShowForm}
+          //   city={city && deslugify(city)}
+          //   state={state && deslugify(state)}
+          // />
         )}
       </div>
     </div>
