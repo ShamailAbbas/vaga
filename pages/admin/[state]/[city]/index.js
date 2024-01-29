@@ -136,19 +136,7 @@ const City = ({
           city={city && deslugify(city)}
           state={state && deslugify(state)}
         />
-        <ArticleForm
-          onSubmit={async (data) => {
-            console.log("article data is ", data);
-            const res = await addArticle(data);
-            if (res._id) {
-              showMessage("Added Successfully");
-              setShowForm("");
-            }
-          }}
-          setShowForm={setShowForm}
-          city={city && deslugify(city)}
-          state={state && deslugify(state)}
-        />
+
         {isAdmin && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
