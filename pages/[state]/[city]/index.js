@@ -91,6 +91,15 @@ const City = ({
           city={city && deslugify(city)}
           state={state && deslugify(state)}
         />
+        <AttorneyForm
+          onSubmit={async (data) => {
+            await addAttorney(data);
+            setShowForm("");
+          }}
+          setShowForm={setShowForm}
+          city={city && deslugify(city)}
+          state={state && deslugify(state)}
+        />
         {isAdmin && (
           <button
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold "
