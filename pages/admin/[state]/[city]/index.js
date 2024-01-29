@@ -40,8 +40,10 @@ const City = ({
   const { state, city } = router.query;
   const [_isAdmin, set_IsAdmin] = useState(false);
   const [showForm, setShowForm] = useState("");
+  const [showArticleForm, setshowArticleForm] = useState(true);
   useEffect(() => {
     set_IsAdmin(isAdmin);
+    setshowArticleForm("");
   }, []);
 
   function showMessage(message, closetime = 1000) {
@@ -136,7 +138,7 @@ const City = ({
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
-            onClick={() => setShowForm(4)}
+            onClick={() => setshowArticleForm(true)}
           >
             Add A New Article
           </div>
@@ -196,21 +198,20 @@ const City = ({
           />
         )}
 
-        {showForm == 4 && (
-          <p>jjl</p>
-          // <ArticleForm
-          //   onSubmit={async (data) => {
-          //     console.log("article data is ", data);
-          //     const res = await addArticle(data);
-          //     if (res._id) {
-          //       showMessage("Added Successfully");
-          //       setShowForm("");
-          //     }
-          //   }}
-          //   setShowForm={setShowForm}
-          //   city={city && deslugify(city)}
-          //   state={state && deslugify(state)}
-          // />
+        {showArticleForm && (
+          <ArticleForm
+            onSubmit={async (data) => {
+              console.log("article data is ", data);
+              const res = await addArticle(data);
+              if (res._id) {
+                showMessage("Added Successfully");
+                setShowForm("");
+              }
+            }}
+            setShowForm={setshowArticleForm}
+            city={city && deslugify(city)}
+            state={state && deslugify(state)}
+          />
         )}
       </div>
     </div>
