@@ -78,7 +78,7 @@ const City = ({
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
-            onClick={() => setShowForm("attorny")}
+            onClick={() => setShowForm(1)}
           >
             Add A New Attorny
           </div>
@@ -89,7 +89,7 @@ const City = ({
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
-            onClick={() => setShowForm("review")}
+            onClick={() => setShowForm(2)}
           >
             Add A New Review
           </div>
@@ -120,7 +120,7 @@ const City = ({
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
-            onClick={() => setShowForm("video")}
+            onClick={() => setShowForm(3)}
           >
             Add A New Video
           </div>
@@ -136,7 +136,7 @@ const City = ({
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
-            onClick={() => setShowForm("article")}
+            onClick={() => setShowForm(4)}
           >
             Add A New Article
           </div>
@@ -154,33 +154,8 @@ const City = ({
             slug={article.slug}
           />
         ))}
-        {showForm == "review" && (
-          <ReviewForm
-            onSubmit={async (data) => {
-              const res = await addReview(data);
-              if (res._id) {
-                showMessage("Added Successfully");
-                setShowForm("");
-              }
-            }}
-            setShowForm={setShowForm}
-            city={city && deslugify(city)}
-          />
-        )}
-        {showForm == "video" && (
-          <VideoForm
-            onSubmit={async (data) => {
-              const res = await addVideo(data);
-              if (res._id) {
-                showMessage("Added Successfully");
-                setShowForm("");
-              }
-            }}
-            setShowForm={setShowForm}
-            city={city && deslugify(city)}
-          />
-        )}
-        {showForm == "attorny" && (
+
+        {showForm == 1 && (
           <AttorneyForm
             onSubmit={async (data) => {
               const res = await addAttorney(data);
@@ -194,8 +169,34 @@ const City = ({
             state={state && deslugify(state)}
           />
         )}
+        {showForm == 2 && (
+          <ReviewForm
+            onSubmit={async (data) => {
+              const res = await addReview(data);
+              if (res._id) {
+                showMessage("Added Successfully");
+                setShowForm("");
+              }
+            }}
+            setShowForm={setShowForm}
+            city={city && deslugify(city)}
+          />
+        )}
+        {showForm == 3 && (
+          <VideoForm
+            onSubmit={async (data) => {
+              const res = await addVideo(data);
+              if (res._id) {
+                showMessage("Added Successfully");
+                setShowForm("");
+              }
+            }}
+            setShowForm={setShowForm}
+            city={city && deslugify(city)}
+          />
+        )}
 
-        {showForm == "article" && (
+        {showForm == 4 && (
           <ArticleForm
             onSubmit={async (data) => {
               console.log("article data is ", data);
