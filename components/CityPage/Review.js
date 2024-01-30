@@ -88,7 +88,7 @@ const Review = ({ averageStars, reviews }) => {
         </p>
       </div>
       <div
-        className={`flex overflow-x-auto pb-8 mt-8 ${
+        className={`flex overflow-x-auto reviewcontainer pb-8 mt-8 ${
           reviews?.reviews?.length == 1 && "justify-center"
         }`}
       >

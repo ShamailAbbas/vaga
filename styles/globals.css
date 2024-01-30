@@ -15,3 +15,21 @@
 * {
   overflow-x: hidden;
 }
+/* Reduce the width of the x-axis scrollbar for elements with the class .reviewcontainer */
+.reviewcontainer::-webkit-scrollbar {
+  height: 5px; /* Adjust the height as needed */
+}
+
+/* Optional: You can add additional styles to customize the appearance of the scrollbar */
+.reviewcontainer::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+.reviewcontainer::-webkit-scrollbar-thumb {
+  background-color: #cccaca;
+}
+
+/* Optional: Handle on hover */
+.reviewcontainer::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa9a9;
+}
