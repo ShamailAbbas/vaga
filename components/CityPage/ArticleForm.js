@@ -62,6 +62,7 @@ const ArticleForm = ({ onSubmit, setShowForm, state, city }) => {
             type="text"
             name="title"
             value={articleData.title}
+            required={true}
             placeholder="Enter Title Here"
             onChange={handleInputChange}
             className="w-full border p-2"
@@ -75,45 +76,40 @@ const ArticleForm = ({ onSubmit, setShowForm, state, city }) => {
             placeholder="Enter Type Here"
             value={articleData.type}
             onChange={handleInputChange}
+            required={true}
             className="w-full border p-2"
           />
         </label>
         <label className="block mb-4">
-          Article Content:
-          <ReactQuill
-            value={articleData.description}
-            onChange={handleContentChange}
-            placeholder="Write Article Content Here"
-            modules={{
-              toolbar: [
-                ["bold", "italic", "underline", "strike"], // toggled buttons
-                ["blockquote"],
+  Article Content:
+  <div className="quill-container flex flex-col h-[200px] overflow-hidden">
+    <ReactQuill
+      value={articleData.description}
+      required={true}
+      onChange={handleContentChange}
+      placeholder="Write Article Content Here"
+      modules={{
+        toolbar: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+        ],
+      }}
+      className="quill-editor flex-grow overflow-y-auto"
+    />
+  </div>
+</label>
 
-                // [{ header: 1 }, { header: 2 }], // custom button values
-                [{ list: "ordered" }, { list: "bullet" }],
-                [{ script: "sub" }, { script: "super" }], // superscript/subscript
-                [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-                // [{ direction: "rtl" }], // text direction
 
-                // [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-                // [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-                // [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-                // [{ font: [] }],
-                // [{ align: [] }],
-
-                // ["clean"], // remove formatting button
-              ],
-            }}
-            className="quill-editor"
-          />
-        </label>
         <label className="block mb-4">
           Article Picture:
           <input
             type="file"
             accept="image/*"
             onChange={handleFileChange}
+            required={true}
             className="w-full border p-2"
           />
         </label>

@@ -50,6 +50,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
             type="text"
             name="name"
             value={attorneyData.name}
+            required={true}
             onChange={handleInputChange}
             className="w-full border p-2"
           />
@@ -60,6 +61,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
             type="tel"
             name="phone"
             value={attorneyData.phone}
+            required={true}
             onChange={handleInputChange}
             className="w-full border p-2"
           />
@@ -70,6 +72,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
           <textarea
             name="description"
             value={attorneyData.description}
+            required={true}
             onChange={handleInputChange}
             className="w-full border p-2"
           />
@@ -79,6 +82,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
           <input
             type="text"
             name="firm"
+            required={true}
             value={attorneyData.firm}
             onChange={handleInputChange}
             className="w-full border p-2"
@@ -89,6 +93,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
           <input
             type="url"
             name="website"
+            required={true}
             value={attorneyData.website}
             onChange={handleInputChange}
             className="w-full border p-2"
@@ -99,6 +104,7 @@ const AttorneyForm = ({ onSubmit, setShowForm, city, state }) => {
           <input
             type="file"
             accept="image/*"
+            required={true}
             onChange={handleFileChange}
             className="w-full border p-2"
           />

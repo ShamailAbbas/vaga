@@ -1,9 +1,13 @@
 import moment from "moment";
 import Image from "next/image";
-
+import React, { useEffect, useState } from "react";
 import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 
-const Review = ({ averageStars, reviews }) => {
+import {
+  
+  fetchReviewByCity,
+} from "@/lib/review";
+const Review = ({ averageStars, data,city_name }) => {
   const StarRating = ({ rating }) => {
     // Ensure the rating is within the range [0, 5]
     const normalizedRating = Math.min(5, Math.max(0, rating));
@@ -59,8 +63,33 @@ const Review = ({ averageStars, reviews }) => {
     );
   };
 
+  const [shouldHideShowAll,setshouldHideShowAll]=useState(false)
+  const [_reviews,setReviews]=useState()
+  useEffect(() => {
+    data?.reviews && setReviews(data);
+  }, [data]);
+
+  async function getMore() {
+    if (_reviews?.currentPage < _reviews?.totalPages) {
+      const newLimits = {
+        page: 1,
+        limit: _reviews.totalReviews,
+      };
+
+      const res = await fetchReviewByCity(city_name, newLimits.page,newLimits.limit);
+      if (res?.reviews?.length > 0) {
+        setReviews({
+          reviews: [..._reviews.reviews, ...res?.reviews],
+          currentPage: res.currentPage,
+          totalPages: res.totalPages,
+        });
+        
+        setshouldHideShowAll(true)
+      }
+    }
+  }
   return (
-    <div className="flex flex-col w-full p-4 border-b-[2px] border-slate-200">
+    <div className="flex flex-col w-full p-4 pt-8 border-b-[2px] border-slate-200">
       <div className="flex self-center items-center">
         <Image
           src="/images/flower.png"
@@ -70,7 +99,9 @@ const Review = ({ averageStars, reviews }) => {
           quality={80}
           //className="w-40 h-40"
         />
-        <p className="opacity-70 font-bold text-[40px] mb-6">{averageStars}</p>
+        <p className="opacity-70 font-bold text-[40px] mb-6">
+          {averageStars && parseFloat(averageStars)?.toFixed(1)}
+        </p>
         <Image
           src="/images/flower.png"
           alt="profile"
@@ -89,16 +120,16 @@ const Review = ({ averageStars, reviews }) => {
       </div>
       <div
         className={`flex overflow-x-auto reviewcontainer pb-8 mt-8 ${
-          reviews?.reviews?.length == 1 && "justify-center"
+          _reviews?.totalReviews == 1 && "justify-center"
         }`}
       >
-        {reviews?.reviews?.map((i, index) => (
+        {_reviews?.reviews?.map((i, index) => (
           <EachReview data={i} key={index} />
         ))}
       </div>
-      {reviews?.totalReviews > 10 && (
-        <button className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold ">
-          See all {reviews?.totalReviews} reviews
+      {_reviews?.totalReviews > 10 &&!shouldHideShowAll&& (
+        <button className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold  " onClick={()=>getMore()}>
+          See all {_reviews?.totalReviews} reviews
         </button>
       )}
     </div>

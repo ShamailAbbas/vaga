@@ -46,6 +46,7 @@ const ReviewForm = ({ onSubmit, setShowForm, city }) => {
           <input
             type="text"
             name="reviewer"
+            required={true}
             value={reviewData.reviewer}
             onChange={handleInputChange}
             className="w-full border p-2"
@@ -56,9 +57,11 @@ const ReviewForm = ({ onSubmit, setShowForm, city }) => {
           <input
             type="number"
             name="stars"
+            required={true}
             value={reviewData.stars}
             onChange={handleInputChange}
             className="w-full border p-2"
+            step={0.1}
             min={0}
             max={5}
           />
@@ -68,7 +71,9 @@ const ReviewForm = ({ onSubmit, setShowForm, city }) => {
           <textarea
             name="review"
             value={reviewData.review}
+            required={true}
             onChange={handleInputChange}
+            maxLength={200}
             className="w-full border p-2"
           />
         </label>
@@ -77,6 +82,7 @@ const ReviewForm = ({ onSubmit, setShowForm, city }) => {
           <input
             type="file"
             accept="image/*"
+            required={true}
             onChange={handleFileChange}
             className="w-full border p-2"
           />

@@ -85,9 +85,11 @@ const City = ({
             Add A New Attorny
           </div>
         )}
-        {attorney.map((data, index) => (
-          <Attorny data={data} key={index} />
-        ))}
+
+        {attorney && (
+          <Attorny data={attorney} city_name={city && deslugify(city)} />
+        )}
+
         {isAdmin && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
@@ -97,9 +99,13 @@ const City = ({
           </div>
         )}
         {reviews?.reviews?.length > 0 && (
-          <Review averageStars={averageStars} reviews={reviews} />
+          <Review
+            averageStars={averageStars}
+            data={reviews}
+            city_name={city && deslugify(city)}
+          />
         )}
-        {isAdmin && !faqs?.length > 0 && (
+        {isAdmin && !faqs?.faqs?.length > 0 && (
           <div
             className="flex items-center w-full justify-center py-2 my-4 rounded-full border-[1.5px] border-red-300 hover:bg-red-200 bg-red-100 text-red-800 text-16 font-bold cursor-pointer"
             onClick={async () => {
@@ -113,7 +119,9 @@ const City = ({
             Generate Faqs
           </div>
         )}
-        {faqs?.length > 0 && <Faq faqs={faqs} />}
+        {faqs?.faqs?.length > 0 && (
+          <Faq data={faqs} city_name={city && deslugify(city)} />
+        )}
         {videoIds.length > 0 && (
           <p className=" self-start uppercase text-[22px]  opacity-90 mt-8">
             PERSONAL INJURY VIDEOS FOR {deslugify(city)}
@@ -128,7 +136,7 @@ const City = ({
           </div>
         )}
         {videoIds.map((i, index) => (
-          <YoutubeEmbed videoId={i.videoId} key={index} />
+          <YoutubeEmbed data={i.videoId} key={index} />
         ))}
         {articles.length > 0 && (
           <p className=" self-start  uppercase text-[22px]   opacity-90 mt-8">
@@ -143,19 +151,9 @@ const City = ({
             Add A New Article
           </div>
         )}
-        {articles.map((article, index) => (
-          <ArticlePreview
-            key={index}
-            imageUrl={article.imageUrl}
-            title={article.title}
-            date={article.date}
-            description={article.description}
-            type={article.type}
-            state={article.state}
-            city={article.city}
-            slug={article.slug}
-          />
-        ))}
+        {articles && (
+          <ArticlePreview data={articles} city_name={city && deslugify(city)} />
+        )}
 
         {showForm == 1 && (
           <AttorneyForm
@@ -201,7 +199,6 @@ const City = ({
         {showForm == 4 && (
           <ArticleForm
             onSubmit={async (data) => {
-              console.log("article data is ", data);
               const res = await addArticle(data);
               if (res._id) {
                 showMessage("Added Successfully");
@@ -221,9 +218,15 @@ const City = ({
 export default City;
 
 export const getServerSideProps = async ({ params, req }) => {
-  let isAdmin = true;
+  let isAdmin = false;
   let cityFound = false;
   try {
+    // Extract subdomain from the hostname
+    const subdomain = req.headers.host.split(".")[0];
+
+    if (subdomain.toLowerCase() === "admin") {
+      isAdmin = true;
+    }
     const { city, state } = params;
     const state_name = deslugify(state);
     const city_name = deslugify(city);
@@ -260,13 +263,13 @@ export const getServerSideProps = async ({ params, req }) => {
   } catch (error) {
     return {
       props: {
-        attorney: [],
-        articles: [],
+        attorney: null,
+        articles: null,
         videoIds: [],
         reviews: {},
         averageStars: null,
         isAdmin,
-        faqs: [],
+        faqs: null,
         cityFound,
       },
     };

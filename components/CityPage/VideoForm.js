@@ -36,6 +36,7 @@ const VideoForm = ({ onSubmit, setShowForm, city }) => {
           <input
             type="text"
             name="videoId"
+            required={true}
             value={reviewData.videoId}
             onChange={handleInputChange}
             className="w-full border p-2"

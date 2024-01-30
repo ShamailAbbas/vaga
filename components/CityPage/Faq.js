@@ -1,31 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
-const Faq = ({ faqs }) => {
+
+import { getFaqByCity } from "@/lib/faq";
+import { faqs } from "@/data";
+
+const Faq = ({ data, city_name }) => {
+  const [_faqs, setFaqs] = useState();
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+  });
+
+  useEffect(() => {
+    data?.faqs && setFaqs(data);
+  }, [data]);
+
+  async function getMore() {
+    if (_faqs?.currentPage < _faqs?.totalPages) {
+      const newLimits = {
+        page: pagination.page + 1,
+      };
+
+      const res = await getFaqByCity(city_name, newLimits.page);
+      if (res?.faqs?.length > 0) {
+        setFaqs({
+          faqs: [..._faqs.faqs, ...res?.faqs],
+          currentPage: res.currentPage,
+          totalPages: res.totalPages,
+        });
+
+        setPagination(newLimits);
+      }
+    }
+  }
   return (
     <div className="faq-container w-full my-6">
       <p className="font-semibold text-20 my-2 opacity-80">
         FREQUENTLY ASKED QUESTIONS
       </p>
-      <p className=" text-14 mb-8 opacity-60">
-        Still having questions? Visit our Faq page or contact us
+      <p className=" text-14 mb-8 opacity-70">
+        Still having questions? Visit our <span className='underline opacity-60'>FAQ page</span> or <span className='underline opacity-50'>contact us</span>
       </p>
-      {faqs.map((faq, index) => (
+      {_faqs?.faqs?.map((faq, index) => (
         <FaqAccordion
           key={faq._id}
           question={faq.question}
           answer={faq.answer}
         />
       ))}
+      {_faqs?.currentPage < _faqs?.totalPages && (
+        <p className="py-2 opacity-60 cursor-pointer" onClick={() => getMore()}>
+          more
+        </p>
+      )}
     </div>
   );
 };
 
 export default Faq;
 
-// components/FaqAccordion.js
-import { useState } from "react";
+// // components/FaqAccordion.js
+// import { useState } from "react";
+// import { getFaqByCity } from "@/lib/faq";
 
 const FaqAccordion = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);

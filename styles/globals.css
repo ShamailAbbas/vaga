@@ -15,6 +15,9 @@
 * {
   overflow-x: hidden;
 }
+.quill-container {
+  overflow-x: hidden !important;
+}
 /* Reduce the width of the x-axis scrollbar for elements with the class .reviewcontainer */
 .reviewcontainer::-webkit-scrollbar {
   height: 5px; /* Adjust the height as needed */
