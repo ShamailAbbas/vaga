@@ -36,6 +36,7 @@ const ArticlePage = ({ article }) => {
     author: {
       "@type": "Organization",
       name: "Personal Injury Near Me", // Replace with your actual organization name
+      url: "https://admin.personalinjurynearme.attorney",
     },
     publisher: {
       "@type": "Organization",
