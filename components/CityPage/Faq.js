@@ -5,6 +5,7 @@ import { FaMinus } from "react-icons/fa";
 
 import { getFaqByCity } from "@/lib/faq";
 import { faqs } from "@/data";
+import Head from "next/head";
 
 const Faq = ({ data, city_name }) => {
   const [_faqs, setFaqs] = useState();
@@ -36,26 +37,50 @@ const Faq = ({ data, city_name }) => {
     }
   }
   return (
-    <div className="faq-container w-full my-6">
-      <p className="font-semibold text-20 my-2 opacity-80">
-        FREQUENTLY ASKED QUESTIONS
-      </p>
-      <p className=" text-14 mb-8 opacity-70">
-        Still having questions? Visit our <span className='underline opacity-60'>FAQ page</span> or <span className='underline opacity-50'>contact us</span>
-      </p>
-      {_faqs?.faqs?.map((faq, index) => (
-        <FaqAccordion
-          key={faq._id}
-          question={faq.question}
-          answer={faq.answer}
-        />
-      ))}
-      {_faqs?.currentPage < _faqs?.totalPages && (
-        <p className="py-2 opacity-60 cursor-pointer" onClick={() => getMore()}>
-          more
+    <>
+      <Head>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "FAQPage",
+            mainEntity: data?.faqs?.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          })}
+        </script>
+      </Head>
+
+      <div className="faq-container w-full my-6">
+        <p className="font-semibold text-20 my-2 opacity-80">
+          FREQUENTLY ASKED QUESTIONS
         </p>
-      )}
-    </div>
+        <p className=" text-14 mb-8 opacity-70">
+          Still having questions? Visit our{" "}
+          <span className="underline opacity-60">FAQ page</span> or{" "}
+          <span className="underline opacity-50">contact us</span>
+        </p>
+        {_faqs?.faqs?.map((faq, index) => (
+          <FaqAccordion
+            key={faq._id}
+            question={faq.question}
+            answer={faq.answer}
+          />
+        ))}
+        {_faqs?.currentPage < _faqs?.totalPages && (
+          <p
+            className="py-2 opacity-60 cursor-pointer"
+            onClick={() => getMore()}
+          >
+            more
+          </p>
+        )}
+      </div>
+    </>
   );
 };
 

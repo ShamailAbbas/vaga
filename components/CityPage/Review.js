@@ -3,11 +3,9 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { IoMdStar, IoMdStarHalf } from "react-icons/io";
 
-import {
-  
-  fetchReviewByCity,
-} from "@/lib/review";
-const Review = ({ averageStars, data,city_name }) => {
+import { fetchReviewByCity } from "@/lib/review";
+import Head from "next/head";
+const Review = ({ averageStars, data, city_name }) => {
   const StarRating = ({ rating }) => {
     // Ensure the rating is within the range [0, 5]
     const normalizedRating = Math.min(5, Math.max(0, rating));
@@ -63,8 +61,8 @@ const Review = ({ averageStars, data,city_name }) => {
     );
   };
 
-  const [shouldHideShowAll,setshouldHideShowAll]=useState(false)
-  const [_reviews,setReviews]=useState()
+  const [shouldHideShowAll, setshouldHideShowAll] = useState(false);
+  const [_reviews, setReviews] = useState();
   useEffect(() => {
     data?.reviews && setReviews(data);
   }, [data]);
@@ -76,63 +74,87 @@ const Review = ({ averageStars, data,city_name }) => {
         limit: _reviews.totalReviews,
       };
 
-      const res = await fetchReviewByCity(city_name, newLimits.page,newLimits.limit);
+      const res = await fetchReviewByCity(
+        city_name,
+        newLimits.page,
+        newLimits.limit
+      );
       if (res?.reviews?.length > 0) {
         setReviews({
           reviews: [..._reviews.reviews, ...res?.reviews],
           currentPage: res.currentPage,
           totalPages: res.totalPages,
         });
-        
-        setshouldHideShowAll(true)
+
+        setshouldHideShowAll(true);
       }
     }
   }
   return (
-    <div className="flex flex-col w-full p-4 pt-8 border-b-[2px] border-slate-200">
-      <div className="flex self-center items-center">
-        <Image
-          src="/images/flower.png"
-          alt="profile"
-          width={50}
-          height={50}
-          quality={80}
-          //className="w-40 h-40"
-        />
-        <p className="opacity-70 font-bold text-[40px] mb-6">
-          {averageStars && parseFloat(averageStars)?.toFixed(1)}
-        </p>
-        <Image
-          src="/images/flower.png"
-          alt="profile"
-          width={50}
-          height={50}
-          quality={80}
-          className="transform scale-x-[-1]"
-        />
+    <>
+      <Head>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "AggregateRating",
+            itemReviewed: {
+              "@type": "Thing",
+              name: `${city_name} Personal Injury Attorny Review`, // Replace with your actual business or product name
+            },
+            ratingValue: averageStars || 0,
+            reviewCount: data?.totalReviews || 0,
+            bestRating: 5, // Assuming the rating is out of 5
+          })}
+        </script>
+      </Head>
+      <div className="flex flex-col w-full p-4 pt-8 border-b-[2px] border-slate-200">
+        <div className="flex self-center items-center">
+          <Image
+            src="/images/flower.png"
+            alt="profile"
+            width={50}
+            height={50}
+            quality={80}
+            //className="w-40 h-40"
+          />
+          <p className="opacity-70 font-bold text-[40px] mb-6">
+            {averageStars && parseFloat(averageStars)?.toFixed(1)}
+          </p>
+          <Image
+            src="/images/flower.png"
+            alt="profile"
+            width={50}
+            height={50}
+            quality={80}
+            className="transform scale-x-[-1]"
+          />
+        </div>
+        <div className="flex items-center flex-col mt-4 mb-6 w-full ">
+          <p className="font-medium  mb-2">Guest Favorite</p>
+          <p className="w-[64%] text-center text-sm opacity-70">
+            One of the most beloved home on Airbnb based on ratings, reviews and
+            reliablity.
+          </p>
+        </div>
+        <div
+          className={`flex overflow-x-auto reviewcontainer pb-8 mt-8 ${
+            _reviews?.totalReviews == 1 && "justify-center"
+          }`}
+        >
+          {_reviews?.reviews?.map((i, index) => (
+            <EachReview data={i} key={index} />
+          ))}
+        </div>
+        {_reviews?.totalReviews > 10 && !shouldHideShowAll && (
+          <button
+            className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold  "
+            onClick={() => getMore()}
+          >
+            See all {_reviews?.totalReviews} reviews
+          </button>
+        )}
       </div>
-      <div className="flex items-center flex-col mt-4 mb-6 w-full ">
-        <p className="font-medium  mb-2">Guest Favorite</p>
-        <p className="w-[64%] text-center text-sm opacity-70">
-          One of the most beloved home on Airbnb based on ratings, reviews and
-          reliablity.
-        </p>
-      </div>
-      <div
-        className={`flex overflow-x-auto reviewcontainer pb-8 mt-8 ${
-          _reviews?.totalReviews == 1 && "justify-center"
-        }`}
-      >
-        {_reviews?.reviews?.map((i, index) => (
-          <EachReview data={i} key={index} />
-        ))}
-      </div>
-      {_reviews?.totalReviews > 10 &&!shouldHideShowAll&& (
-        <button className="flex items-center w-full justify-center py-2 my-4 rounded-md border-[1.5px] border-gray-600 hover:bg-slate-50 text-16 font-bold  " onClick={()=>getMore()}>
-          See all {_reviews?.totalReviews} reviews
-        </button>
-      )}
-    </div>
+    </>
   );
 };
 
