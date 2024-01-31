@@ -5,4 +5,10 @@ module.exports = {
   sitemapSize: 5000,
   generateRobotsTxt: true,
   // Add other configurations as needed
+  robotsTxtOptions: {
+    additionalSitemaps: [
+      "https://personalinjurynearme.attorney/server-sitemap.xml/article.xml",
+      "https://personalinjurynearme.attorney/server-sitemap.xml/city.xml",
+    ],
+  },
 };
