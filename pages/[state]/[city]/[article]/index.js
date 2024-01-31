@@ -31,8 +31,8 @@ const ArticlePage = ({ article }) => {
     },
     headline: article.title,
     image: article.imageUrl,
-    datePublished: article.date,
-    dateModified: article.date, // Assuming the modification date is the same as the published date
+    datePublished: new Date(article.date),
+    dateModified: new Date(article.date), // Assuming the modification date is the same as the published date
     author: {
       "@type": "Organization",
       name: "Personal Injury Near Me", // Replace with your actual organization name
@@ -40,6 +40,7 @@ const ArticlePage = ({ article }) => {
     publisher: {
       "@type": "Organization",
       name: "Personal Injury Near Me",
+      url: "https://admin.personalinjurynearme.attorney",
       logo: {
         "@type": "ImageObject",
         url: "/images/logo.png", // Replace with the URL to your organization's logo

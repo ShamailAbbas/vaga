@@ -98,8 +98,8 @@ const Review = ({ averageStars, data, city_name }) => {
             "@context": "http://schema.org",
             "@type": "AggregateRating",
             itemReviewed: {
-              "@type": "Thing",
-              name: `${city_name} Personal Injury Attorny Review`, // Replace with your actual business or product name
+              "@type": "Attorney", // Change this to the appropriate type
+              name: `${city_name} Personal Injury Attorney`, // Replace with your actual business or product name
             },
             ratingValue: averageStars || 0,
             reviewCount: data?.totalReviews || 0,
@@ -107,6 +107,7 @@ const Review = ({ averageStars, data, city_name }) => {
           })}
         </script>
       </Head>
+
       <div className="flex flex-col w-full p-4 pt-8 border-b-[2px] border-slate-200">
         <div className="flex self-center items-center">
           <Image

@@ -36,6 +36,7 @@ const City = ({
   isAdmin,
   faqs,
   cityFound,
+  zip,
 }) => {
   const router = useRouter();
   const { state, city } = router.query;
@@ -155,6 +156,13 @@ const City = ({
           <ArticlePreview data={articles} city_name={city && deslugify(city)} />
         )}
 
+        {zip && (
+          <div className="mt-60 pb-12  text-gray-900 md:text-[20px]">
+            <p>ZIP CODES FOR PERSONAL INJURY LAW FIRMS</p>
+            <p className="my-2 text-justify">{zip}</p>
+          </div>
+        )}
+
         {showForm == 1 && (
           <AttorneyForm
             onSubmit={async (data) => {
@@ -232,7 +240,7 @@ export const getServerSideProps = async ({ params, req }) => {
     const city_name = deslugify(city);
 
     const _city = await GetCityByName(city_name, state_name);
-    // console.log("_city", _city);
+    console.log("_city", _city.zips);
 
     if (!_city._id) {
       throw new Error();
@@ -258,6 +266,7 @@ export const getServerSideProps = async ({ params, req }) => {
         isAdmin,
         faqs,
         cityFound: true,
+        zip: _city?.zips?.toString(),
       },
     };
   } catch (error) {
@@ -271,6 +280,7 @@ export const getServerSideProps = async ({ params, req }) => {
         isAdmin,
         faqs: null,
         cityFound,
+        zip: "",
       },
     };
   }
