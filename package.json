@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "start": "next start",
-    "build": "next build",
+    "build": "next build && npm run generate-sitemap",
+    "generate-sitemap": "next-sitemap",
     "lint": "next lint"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "eslint-config-next": "13.1.6",
     "moment": "^2.30.1",
     "next": "13.1.6",
+    "next-sitemap": "^4.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.0.1",
