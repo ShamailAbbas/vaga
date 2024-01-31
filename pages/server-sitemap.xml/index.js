@@ -2,7 +2,7 @@ import { fetchArticles } from "@/lib/article";
 
 import slugify from "@/utils/slugify";
 import { getServerSideSitemapLegacy } from "next-sitemap";
-import { cities } from "@citiesdata";
+import { cities } from "@/citiesdata";
 
 export const getServerSideProps = async (ctx) => {
   const articles = await fetchArticles();
