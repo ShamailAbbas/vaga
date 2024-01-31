@@ -7,8 +7,8 @@ module.exports = {
   // Add other configurations as needed
   robotsTxtOptions: {
     additionalSitemaps: [
-      "https://personalinjurynearme.attorney/server-sitemap/article.xml",
-      "https://personalinjurynearme.attorney/server-sitemap/city.xml",
+      "https://personalinjurynearme.attorney/server-sitemap.xml/article.xml",
+      "https://personalinjurynearme.attorney/server-sitemap.xml/city.xml",
     ],
   },
 };
